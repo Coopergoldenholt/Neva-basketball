@@ -1,0 +1,17 @@
+.make-or-miss-alert {
+	top: 30%;
+	background: white;
+	height: 250px;
+	width: 325px;
+	position: fixed;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	z-index: 999;
+	box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.5);
+	padding: 10px;
+}
+
+.make-or-miss-alert-button {
+	background: red;
+}
