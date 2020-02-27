@@ -3,10 +3,12 @@ import promiseMiddleware from "redux-promise-middleware";
 import { composeWithDevTools } from "redux-devtools-extension";
 import inGameStatsReducer from "./inGameStatsReducer";
 import userReducer from "./userReducer";
+import statReducer from "./statReducer";
 
 const rootReducer = combineReducers({
 	user: userReducer,
-	inGameStats: inGameStatsReducer
+	inGameStats: inGameStatsReducer,
+	stats: statReducer
 });
 
 const store = createStore(

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { TextField } from "@material-ui/core";
+import axios from "axios";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { startFacebookSession } from "../../ducks/userReducer";
-import FacebookLogin from "react-facebook-login";
-import GoogleLogin from "react-google-login";
-const { REACT_APP_FACEBOOK_KEY } = process.env;
 
-const Login = props => {
+const Register = props => {
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [emailCheck, runEmailCheck] = useState(false);
 	const [passwordCheck, runPasswordCheck] = useState(false);
-
+	const [confirmPassword, runConfirmPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 	useEffect(() => {
 		if (
 			(password.length > 7 && password.includes("A")) ||
@@ -82,7 +82,23 @@ const Login = props => {
 		if (password.length <= 7) {
 			runPasswordCheck(false);
 		}
+		if (password !== confirmPassword) {
+			runPasswordCheck(false);
+		}
 	}, [password]);
+	const passwordNotConfirmed = () => {
+		return (
+			<TextField
+				onChange={e => runConfirmPassword(e.target.value)}
+				label="Confirm"
+				id="outlined-size-small"
+				variant="outlined"
+				size="small"
+				error
+				helperText="Passwords Do Not Match"
+			/>
+		);
+	};
 
 	useEffect(() => {
 		if (email.includes("@")) {
@@ -90,41 +106,72 @@ const Login = props => {
 		}
 	}, [email]);
 
-	const responseFacebook = response => {
-		props
-			.startFacebookSession(response)
-			.then(() => props.history.push("/home"));
-	};
-
-	const responseGoogle = response => {
-		console.log(response);
+	const handleSubmit = () => {
+		const name = `${firstName} ${lastName}`;
+		axios
+			.post("/api/register", {
+				email: email,
+				password: password,
+				name: name,
+				subscription: "none"
+			})
+			.then(res => {
+				alert("Thank You For Signing Up!");
+				props.history.push("/subscribe");
+			})
+			.catch(err => alert("Email In Use"));
 	};
 	return (
-		<div className="App">
-			<h1>LOGIN WITH FACEBOOK AND GOOGLE</h1>
-
-			<FacebookLogin
-				appId={REACT_APP_FACEBOOK_KEY}
-				fields="name,email,picture"
-				callback={responseFacebook}
-			/>
-			<input onChange={e => setEmail(e.target.value)} />
-			<input type="password" onChange={e => setPassword(e.target.value)} />
-
-			{/* <GoogleLogin
-				clientId="" //CLIENTID NOT CREATED YET
-				buttonText="LOGIN WITH GOOGLE"
-				onSuccess={responseGoogle}
-				onFailure={responseGoogle}
-			/> */}
+		<div>
+			<div>
+				<TextField
+					onChange={e => setFirstName(e.target.value)}
+					label="First Name"
+					id="outlined-size-small"
+					variant="outlined"
+					size="small"
+				/>
+				<TextField
+					onChange={e => setLastName(e.target.value)}
+					label="Last Name"
+					id="outlined-size-small"
+					variant="outlined"
+					size="small"
+				/>
+			</div>
+			<div>
+				<TextField
+					onChange={e => setEmail(e.target.value)}
+					label="Email"
+					style={{ width: "75%" }}
+					variant="outlined"
+					size="small"
+				/>
+			</div>
+			<div>
+				<TextField
+					onChange={e => setPassword(e.target.value)}
+					label="Password"
+					variant="outlined"
+					size="small"
+				/>
+				{password === confirmPassword ? (
+					<TextField
+						onChange={e => runConfirmPassword(e.target.value)}
+						label="Confirm"
+						id="outlined-size-small"
+						variant="outlined"
+						size="small"
+					/>
+				) : (
+					passwordNotConfirmed()
+				)}
+			</div>
+			<div>
+				<button onClick={() => handleSubmit()}>Submit</button>
+			</div>
 		</div>
 	);
 };
 
-const mapStateToProps = state => {
-	return state;
-};
-
-export default connect(mapStateToProps, { startFacebookSession })(
-	withRouter(Login)
-);
+export default withRouter(Register);

@@ -5,6 +5,7 @@ const massive = require("massive");
 const { SERVER_PORT, SESSION_SECRET, CONNECTION_STRING } = process.env;
 const userCtrl = require("./controllers/userSessionController");
 const gameCtrl = require("./controllers/inGameSessionController");
+const statCtrl = require("./controllers/gamesController");
 
 const app = express();
 
@@ -26,7 +27,10 @@ app.post("/api/login/facebook", userCtrl.loginUserFacebook);
 //* GAME API CALLS
 app.post("/api/user/game", gameCtrl.createGameSession);
 app.put("/api/user/game", gameCtrl.updateGameStat);
-app.delete("/api/user/game", gameCtrl.endGame);
+app.post("/api/user/game/stats", gameCtrl.endGame);
+
+//* STAT API CALLS
+app.get("/api/user/stats/:userId", statCtrl.getRecentGames);
 
 massive(CONNECTION_STRING).then(db => {
 	app.set("db", db);

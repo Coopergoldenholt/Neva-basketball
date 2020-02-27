@@ -8,14 +8,14 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "games" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "opponent" varchar(40),
   "user_id" int,
   "date" date
 );
 
 CREATE TABLE "basic_stats" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "game_id" int,
   "user_id" int,
   "layup_shot" int,

@@ -18,10 +18,11 @@ module.exports = {
 			subscription
 		]);
 		req.session.user = {
-			name: existingUser.full_name,
+			name: user.full_name,
 			email: user.email,
 			loggedIn: true,
-			subscription: user.subscription
+			subscription: user.subscription,
+			id: user.id
 		};
 		res.send(req.session.user);
 	},
@@ -39,7 +40,8 @@ module.exports = {
 				name: existingUser.full_name,
 				email: existingUser.email,
 				loggedIn: true,
-				subscription: existingUser.subscription
+				subscription: existingUser.subscription,
+				id: existingUser.id
 			};
 			res.status(200).send(req.session.user);
 		} else res.status(401).send("Username or password incorrect");
@@ -60,7 +62,8 @@ module.exports = {
 				email: newFacebookUser.email,
 				loggedIn: true,
 				subscription: newFacebookUser.subscription,
-				accessToken: accessToken
+				accessToken: accessToken,
+				id: newFacebookUser.id
 			};
 			res.status(200).send(req.session.user);
 		} else {
@@ -69,7 +72,8 @@ module.exports = {
 				email: existingUser.email,
 				loggedIn: true,
 				subscription: existingUser.subscription,
-				accessToken: accessToken
+				accessToken: accessToken,
+				id: existingUser.id
 			};
 			res.status(200).send(req.session.user);
 		}

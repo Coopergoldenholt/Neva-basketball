@@ -31,7 +31,8 @@ const Game = props => {
 };
 
 const mapStateToProps = state => {
-	return state;
+	const { inGameStats } = state;
+	return inGameStats;
 };
 
 export default connect(mapStateToProps, {

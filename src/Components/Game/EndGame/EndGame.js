@@ -5,8 +5,15 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 const Endgame = props => {
+	const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() +
+		1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`;
 	const handleEndGameClick = () => {
-		axios.delete("/api/user/game").then(() => {});
+		axios
+			.post("/api/user/game/stats", {
+				userId: props.user.id,
+				date: currentDate
+			})
+			.then(() => {});
 		props.history.push("/home");
 	};
 	return (
@@ -16,4 +23,9 @@ const Endgame = props => {
 	);
 };
 
-export default connect(null, { endGame })(withRouter(Endgame));
+const mapStateToProps = state => {
+	const { user } = state;
+	return user;
+};
+
+export default connect(mapStateToProps, { endGame })(withRouter(Endgame));

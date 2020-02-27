@@ -1,21 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import { startGame } from "../../ducks/inGameStatsReducer";
+import { getUserSession } from "../../ducks/userReducer";
+import StartGamePopup from "./StartGamePopup";
+import StatDisplay from "./StatDisplay/StatDisplay";
 
 const Dashboard = props => {
-	const handleGameStart = () => {
-		axios.post("/api/user").then(res => props.startGame());
+	const [showStartGamePopup, setShowStartGamePopup] = useState(false);
+	useEffect(() => {
+		handleGetSession();
+	}, []);
+	const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() +
+		1}-${new Date().getDate()}`;
 
-		props.history.push("/game");
+	const handleGetSession = () => {
+		axios
+			.get("/api/user")
+			.then(res => {
+				if (res.data.subscription === "none") {
+					alert("You Are Not Subscribed");
+					props.history.push("/");
+				}
+			})
+			.catch(err => {
+				alert("Please Login");
+				props.history.push("/login");
+			});
+		props.getUserSession();
 	};
+
 	return (
 		<div>
-			Dashboard
-			<button onClick={() => handleGameStart()}>Start A Game</button>
+			{showStartGamePopup ? <StartGamePopup /> : null}
+			<button onClick={() => setShowStartGamePopup(true)}>Start A Game</button>
+			{props.user.id ? <StatDisplay /> : null}
 		</div>
 	);
 };
 
-export default connect(null, { startGame })(withRouter(Dashboard));
+const mapStateToProps = state => {
+	const { user } = state;
+	return user;
+};
+
+export default connect(mapStateToProps, { startGame, getUserSession })(
+	withRouter(Dashboard)
+);

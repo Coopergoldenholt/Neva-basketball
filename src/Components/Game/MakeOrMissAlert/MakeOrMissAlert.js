@@ -35,8 +35,8 @@ const MakeOrMissAlert = props => {
 };
 
 const mapStateToProps = state => {
-	return state;
-	// return lastClickedStat;
+	const { inGameStats } = state;
+	return inGameStats;
 };
 
 export default connect(mapStateToProps, {

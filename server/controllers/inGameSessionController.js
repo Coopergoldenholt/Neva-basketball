@@ -33,6 +33,49 @@ module.exports = {
 	},
 
 	endGame: async (req, res) => {
+		const db = req.app.get("db");
+		const { userId, date } = req.body;
+		const {
+			opponent,
+			layupShot,
+			layupMade,
+			closeRangeShot,
+			closeRangeMade,
+			freeThrowShot,
+			freeThrowMade,
+			midRangeShot,
+			midRangeMade,
+			threeShot,
+			threeMade,
+			offensiveRebound,
+			defensiveRebound,
+			steal,
+			assist,
+			block,
+			turnover
+		} = req.session.user.game;
+		const [game] = await db.game.create_game([opponent, userId, date]);
+		const [stats] = await db.game.create_game_stat([
+			game.id,
+			userId,
+			layupShot,
+			layupMade,
+			closeRangeShot,
+			closeRangeMade,
+			freeThrowShot,
+			freeThrowMade,
+			midRangeShot,
+			midRangeMade,
+			threeShot,
+			threeMade,
+			offensiveRebound,
+			defensiveRebound,
+			steal,
+			assist,
+			block,
+			turnover
+		]);
+
 		delete req.session.user.game;
 		res.status(200).send("Game Session Ended");
 	}

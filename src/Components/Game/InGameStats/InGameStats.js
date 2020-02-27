@@ -78,6 +78,9 @@ const InGameStats = props => {
 	);
 };
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+	const { inGameStats } = state;
+	return inGameStats;
+};
 
 export default connect(mapStateToProps)(InGameStats);

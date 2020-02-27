@@ -1,0 +1,2 @@
+insert into basic_stats (game_id, user_id, layup_shot, layup_made, close_range_shot, close_range_made, free_throw_shot, free_throw_made, mid_range_shot, mid_range_made, three_shot, three_made, offensive_rebound, defensive_rebound, steal, assist, block, turnover)
+values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18);
