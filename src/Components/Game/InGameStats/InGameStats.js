@@ -26,9 +26,17 @@ const InGameStats = props => {
 		return Math.round((made / shot) * 100);
 	};
 
+	const points =
+		layupMade * 2 +
+		closeRangeMade * 2 +
+		freeThrowMade +
+		midRangeMade * 2 +
+		threeMade * 3;
+
 	return (
 		<div>
 			<h2> v.s.{opponent}</h2>
+			<p>Points: {points}</p>
 			<p>
 				FG: {layupMade + closeRangeMade + midRangeMade + threeMade}-
 				{layupShot + closeRangeShot + midRangeShot + threeShot}

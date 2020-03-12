@@ -2,7 +2,6 @@ import React from "react";
 import { ResponsiveRadar } from "@nivo/radar";
 
 const GameRadar = props => {
-	console.log(props);
 	const threePoint = Math.round(
 		(props.stats.three_shot / props.fieldGoalsAttempted) * 100
 	);
@@ -15,41 +14,32 @@ const GameRadar = props => {
 	const layup = Math.round(
 		(props.stats.layup_shot / props.fieldGoalsAttempted) * 100
 	);
-	console.log(threePoint);
 	const data = [
 		{
-			taste: "3PT",
-			"Shot Distribution": threePoint,
-			carmenere: 106,
-			syrah: 29
+			shot: "3PT",
+			"Shot Distribution": threePoint
 		},
 		{
-			taste: "MidRange",
-			"Shot Distribution": midRange,
-			carmenere: 23,
-			syrah: 33
+			shot: "MidRange",
+			"Shot Distribution": midRange
 		},
 		{
-			taste: "CloseRange",
-			"Shot Distribution": closeRange,
-			carmenere: 120,
-			syrah: 88
+			shot: "CloseRange",
+			"Shot Distribution": closeRange
 		},
 		{
-			taste: "Layup/Dunk",
-			"Shot Distribution": layup,
-			carmenere: 22,
-			syrah: 75
+			shot: "Layup/Dunk",
+			"Shot Distribution": layup
 		}
 	];
 
 	return (
-		<div style={{ height: "300px" }}>
+		<div style={{ height: "250px" }}>
 			<h2>Shot Distribution</h2>
 			<ResponsiveRadar
 				data={data}
 				keys={["Shot Distribution"]}
-				indexBy="taste"
+				indexBy="shot"
 				maxValue="auto"
 				margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
 				curve="linearClosed"
@@ -59,8 +49,7 @@ const GameRadar = props => {
 				gridShape="circular"
 				gridLabelOffset={36}
 				enableDots={true}
-				dotSize={10}
-				dotColor={{ theme: "background" }}
+				dotSize={8}
 				dotBorderWidth={2}
 				dotBorderColor={{ from: "color" }}
 				enableDotLabel={true}
@@ -68,11 +57,7 @@ const GameRadar = props => {
 				dotLabelYOffset={-12}
 				colors={{ scheme: "set1" }}
 				fillOpacity={0.25}
-				blendMode="multiply"
-				animate={true}
-				motionStiffness={90}
-				motionDamping={15}
-				isInteractive={true}
+				isInteractive={false}
 			/>
 		</div>
 	);

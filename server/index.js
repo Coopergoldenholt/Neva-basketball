@@ -31,6 +31,7 @@ app.post("/api/user/game/stats", gameCtrl.endGame);
 
 //* STAT API CALLS
 app.get("/api/user/stats/:userId", statCtrl.getRecentGames);
+app.get("/api/user/stats/averages/:userId", statCtrl.getAllStats);
 
 massive(CONNECTION_STRING).then(db => {
 	app.set("db", db);

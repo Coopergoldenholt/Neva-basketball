@@ -43,3 +43,9 @@ ALTER TABLE "basic_stats" ADD FOREIGN KEY ("game_id") REFERENCES "games" ("id");
 ALTER TABLE "basic_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 
+
+-- SELECT * 
+--   FROM basic_stats
+--  WHERE value IN (SELECT opponent
+--                    FROM games
+--                   WHERE opponent = 'Bears')

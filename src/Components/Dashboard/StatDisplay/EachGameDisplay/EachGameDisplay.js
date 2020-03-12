@@ -3,7 +3,6 @@ import Moment from "react-moment";
 import GameRadar from "./GameRadar.js/GameRadar";
 
 const EachGameDisplay = props => {
-	console.log(props);
 	const {
 		layup_shot,
 		layup_made,
