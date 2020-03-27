@@ -6,6 +6,7 @@ const { SERVER_PORT, SESSION_SECRET, CONNECTION_STRING } = process.env;
 const userCtrl = require("./controllers/userSessionController");
 const gameCtrl = require("./controllers/inGameSessionController");
 const statCtrl = require("./controllers/gamesController");
+const stripeCtrl = require("./controllers/stripeController");
 
 const app = express();
 
@@ -32,6 +33,9 @@ app.post("/api/user/game/stats", gameCtrl.endGame);
 //* STAT API CALLS
 app.get("/api/user/stats/:userId", statCtrl.getRecentGames);
 app.get("/api/user/stats/averages/:userId", statCtrl.getAllStats);
+
+//* STRIPE API CALLS
+app.post("/api/stripe", stripeCtrl.stripePlayerBasicSubscription);
 
 massive(CONNECTION_STRING).then(db => {
 	app.set("db", db);

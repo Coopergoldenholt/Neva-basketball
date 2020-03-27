@@ -6,11 +6,15 @@ import * as serviceWorker from "./serviceWorker";
 import { HashRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./ducks/store";
+import { StripeProvider } from "react-stripe-elements";
+const { REACT_APP_STRIPE_PROVIDER_KEY } = process.env;
 
 ReactDOM.render(
 	<Provider store={store}>
 		<Router>
-			<App />
+			<StripeProvider apiKey={`${REACT_APP_STRIPE_PROVIDER_KEY}`}>
+				<App />
+			</StripeProvider>
 		</Router>
 	</Provider>,
 	document.getElementById("root")

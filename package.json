@@ -7,6 +7,7 @@
 	"dependencies": {
 		"@material-ui/core": "^4.9.4",
 		"@nivo/line": "^0.61.1",
+		"@nivo/pie": "^0.61.1",
 		"@nivo/radar": "^0.61.1",
 		"@testing-library/jest-dom": "^4.2.4",
 		"@testing-library/react": "^9.4.0",
@@ -27,9 +28,11 @@
 		"react-redux": "^7.2.0",
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "3.4.0",
+		"react-stripe-elements": "^6.1.0",
 		"redux": "^4.0.5",
 		"redux-devtools-extension": "^2.13.8",
-		"redux-promise-middleware": "^6.1.2"
+		"redux-promise-middleware": "^6.1.2",
+		"stripe": "^8.33.0"
 	},
 	"scripts": {
 		"start": "HTTPS=true react-scripts start",

@@ -69,9 +69,18 @@ const AveragesLineGraph = props => {
 
 	return (
 		<div style={{ height: "500px", width: "95vw" }}>
+			<h2
+				style={{
+					paddingTop: "20px",
+					display: "flex",
+					justifyContent: "center"
+				}}
+			>
+				Stats
+			</h2>
 			<ResponsiveLine
 				data={data}
-				margin={{ top: 50, right: 110, bottom: 50, left: 110 }}
+				margin={{ top: 20, right: 110, bottom: 50, left: 110 }}
 				xScale={{ type: "point" }}
 				yScale={{
 					type: "linear",

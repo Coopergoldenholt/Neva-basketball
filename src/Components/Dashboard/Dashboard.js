@@ -10,6 +10,7 @@ import AveragesDisplay from "./AveragesDisplay/AveragesDisplay";
 import AveragesLineGraph from "./AveragesLineGraph/AveragesLineGraph";
 import PercentageLingGraph from "./PercentagesLineGraph/PercentagesLineGraph";
 import getAverageStats from "../../ducks/statReducer";
+import ShotDistrbuttionChart from "./ShotDistributionChart/ShotDistributionChart";
 
 const Dashboard = props => {
 	const [showStartGamePopup, setShowStartGamePopup] = useState(false);
@@ -47,6 +48,7 @@ const Dashboard = props => {
 			<AveragesDisplay />
 			<AveragesLineGraph />
 			<PercentageLingGraph />
+			<ShotDistrbuttionChart />
 			{props.user.id ? <StatDisplay /> : null}
 		</div>
 	);
