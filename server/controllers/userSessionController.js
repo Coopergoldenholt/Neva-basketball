@@ -1,27 +1,34 @@
 const bcrypt = require("bcryptjs");
+const { STRIPE_SECRET_KEY } = process.env;
+const stripe = require("stripe")(STRIPE_SECRET_KEY);
 const saltRounds = 12;
 
 module.exports = {
 	registerUserLocal: async (req, res) => {
 		const db = req.app.get("db");
-		const { email, password, name, subscription } = req.body;
+		const { email, password, name } = req.body;
 		const [existingUser] = await db.user.get_user_by_email(email);
 		if (existingUser) {
 			return res.status(400).send("Email is already in use");
 		}
 		const salt = await bcrypt.genSalt(saltRounds);
 		const hash = await bcrypt.hash(password, salt);
+		const customer = await stripe.customers.create({
+			name: name,
+			email: email
+		});
+		console.log(customer);
 		const [user] = await db.user.create_user_local([
 			name,
 			email,
 			hash,
-			subscription
+			customer.id
 		]);
+
 		req.session.user = {
 			name: user.full_name,
 			email: user.email,
 			loggedIn: true,
-			subscription: user.subscription,
 			id: user.id
 		};
 		res.send(req.session.user);
@@ -31,18 +38,35 @@ module.exports = {
 		const db = req.app.get("db");
 		const { email, password } = req.body;
 		const [existingUser] = await db.user.get_user_by_email(email);
+
 		if (!existingUser) {
 			return res.status(401).send("Username or password incorrect");
 		}
 		const result = await bcrypt.compare(password, existingUser.password);
 		if (result) {
-			req.session.user = {
-				name: existingUser.full_name,
-				email: existingUser.email,
-				loggedIn: true,
-				subscription: existingUser.subscription,
-				id: existingUser.id
-			};
+			const customer = await stripe.customers.retrieve(
+				existingUser.customer_id
+			);
+			if (customer.subscriptions) {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					subscription: existingUser.subscription,
+					id: existingUser.id,
+					subscription: customer.subscriptions.data[0].plan.nickname
+				};
+			} else {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					subscription: existingUser.subscription,
+					id: existingUser.id,
+					subscription: "none"
+				};
+			}
+
 			res.status(200).send(req.session.user);
 		} else res.status(401).send("Username or password incorrect");
 	},
@@ -52,29 +76,106 @@ module.exports = {
 
 		const [existingUser] = await db.user.get_user_by_email(email);
 		if (!existingUser) {
+			const customer = await stripe.customers.create({
+				name: name,
+				email: email
+			});
 			const [newFacebookUser] = await db.user.create_user_facebook([
 				name,
 				email,
-				"none"
+				customer.id
 			]);
+
 			req.session.user = {
 				name: newFacebookUser.full_name,
 				email: newFacebookUser.email,
 				loggedIn: true,
-				subscription: newFacebookUser.subscription,
+				subscription: "none",
 				accessToken: accessToken,
-				id: newFacebookUser.id
+				id: newFacebookUser.id,
+				customerId: customer.id
 			};
+
 			res.status(200).send(req.session.user);
 		} else {
+			const customer = await stripe.customers.retrieve(
+				existingUser.customer_id
+			);
+			console.log(customer);
+			if (customer.subscriptions.data.length > 0) {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					accessToken: accessToken,
+					id: existingUser.id,
+					subscription: customer.subscriptions.data[0].plan.nickname
+				};
+			} else {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					subscription: existingUser.subscription,
+					accessToken: accessToken,
+					id: existingUser.id,
+					subscription: "none"
+				};
+			}
+
+			res.status(200).send(req.session.user);
+		}
+	},
+	loginUserGoogle: async (req, res) => {
+		const db = req.app.get("db");
+		const { email, name } = req.body.session.profileObj;
+
+		const [existingUser] = await db.user.get_user_by_email(email);
+		if (!existingUser) {
+			const customer = await stripe.customers.create({
+				name: name,
+				email: email
+			});
+			const [newGoogleUser] = await db.user.create_user_facebook([
+				name,
+				email,
+				customer.id
+			]);
+
 			req.session.user = {
-				name: existingUser.full_name,
-				email: existingUser.email,
+				name: newGoogleUser.full_name,
+				email: newGoogleUser.email,
 				loggedIn: true,
-				subscription: existingUser.subscription,
-				accessToken: accessToken,
-				id: existingUser.id
+				subscription: "none",
+				id: newGoogleUser.id,
+				customerId: customer.id
 			};
+
+			res.status(200).send(req.session.user);
+		} else {
+			const customer = await stripe.customers.retrieve(
+				existingUser.customer_id
+			);
+			console.log(customer);
+			if (customer.subscriptions.data.length > 0) {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					id: existingUser.id,
+					subscription: customer.subscriptions.data[0].plan.nickname
+				};
+			} else {
+				req.session.user = {
+					name: existingUser.full_name,
+					email: existingUser.email,
+					loggedIn: true,
+					subscription: existingUser.subscription,
+					id: existingUser.id,
+					subscription: "none"
+				};
+			}
+
 			res.status(200).send(req.session.user);
 		}
 	},

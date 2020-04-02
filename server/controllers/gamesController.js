@@ -111,5 +111,44 @@ module.exports = {
 		};
 
 		res.status(200).send(averageStats);
+	},
+	addStats: async (req, res) => {
+		const db = req.app.get("db");
+		const {
+			opponent,
+			date,
+			fieldGoalShot,
+			fieldGoalMade,
+			freeThrowShot,
+			freeThrowMade,
+			threeMade,
+			threeShot,
+			offensiveRebound,
+			defensiveRebound,
+			steal,
+			assist,
+			block,
+			turnover
+		} = req.body;
+		console.log(opponent, date);
+		const [game] = await db.game.create_game([opponent, 1, date]);
+		console.log(game);
+		const stats = await db.game.create_basic_stat_game([
+			game.id,
+			1,
+			fieldGoalShot,
+			fieldGoalMade,
+			freeThrowShot,
+			freeThrowMade,
+			threeShot,
+			threeMade,
+			offensiveRebound,
+			defensiveRebound,
+			steal,
+			assist,
+			block,
+			turnover
+		]);
+		res.status(200).send("Stats Saved");
 	}
 };

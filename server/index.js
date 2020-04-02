@@ -24,15 +24,19 @@ app.get("/api/user", userCtrl.getUser);
 app.post("/api/login/local", userCtrl.loginUserLocal);
 app.post("/api/register", userCtrl.registerUserLocal);
 app.post("/api/login/facebook", userCtrl.loginUserFacebook);
+app.post("/api/login/google", userCtrl.loginUserGoogle);
 
-//* GAME API CALLS
-app.post("/api/user/game", gameCtrl.createGameSession);
-app.put("/api/user/game", gameCtrl.updateGameStat);
+//* SUBSCRIBED GAME API CALLS
+app.post("/api/user/game/subscriber", gameCtrl.createGameSession);
+app.put("/api/user/game/subscriber", gameCtrl.updateGameStat);
 app.post("/api/user/game/stats", gameCtrl.endGame);
 
-//* STAT API CALLS
+//* ADVANCED STAT API CALLS
 app.get("/api/user/stats/:userId", statCtrl.getRecentGames);
 app.get("/api/user/stats/averages/:userId", statCtrl.getAllStats);
+
+//* BASIC STAT API CALLS
+app.post("/api/user/game/basic", statCtrl.addStats);
 
 //* STRIPE API CALLS
 app.post("/api/stripe", stripeCtrl.stripePlayerBasicSubscription);

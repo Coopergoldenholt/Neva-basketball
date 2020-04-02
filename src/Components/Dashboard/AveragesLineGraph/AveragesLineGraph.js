@@ -68,80 +68,89 @@ const AveragesLineGraph = props => {
 	];
 
 	return (
-		<div style={{ height: "500px", width: "95vw" }}>
-			<h2
-				style={{
-					paddingTop: "20px",
-					display: "flex",
-					justifyContent: "center"
-				}}
-			>
-				Stats
-			</h2>
-			<ResponsiveLine
-				data={data}
-				margin={{ top: 20, right: 110, bottom: 50, left: 110 }}
-				xScale={{ type: "point" }}
-				yScale={{
-					type: "linear",
-					min: "0",
-					max: "auto",
-					stacked: false,
-					reverse: false
-				}}
-				axisTop={null}
-				axisRight={null}
-				isInteractive={false}
-				enablePointLabel={true}
-				axisBottom={{
-					orient: "bottom",
-					tickSize: 5,
-					tickPadding: 5,
-					tickRotation: 0,
-					legend: "Last 10 Games",
-					legendOffset: 36,
-					legendPosition: "middle"
-				}}
-				axisLeft={{
-					orient: "left",
-					tickSize: 5,
-					tickPadding: 5,
-					tickRotation: 0,
-					legend: "Total",
-					legendOffset: -40,
-					legendPosition: "middle"
-				}}
-				colors={{ scheme: "nivo" }}
-				pointSize={10}
-				useMesh={true}
-				legends={[
-					{
-						anchor: "bottom-right",
-						direction: "column",
-						justify: false,
-						translateX: 100,
-						translateY: 0,
-						itemsSpacing: 0,
-						itemDirection: "left-to-right",
-						itemWidth: 80,
-						itemHeight: 20,
-						itemOpacity: 0.75,
-						symbolSize: 12,
-						symbolShape: "circle",
-						symbolBorderColor: "rgba(0, 0, 0, .5)",
-						effects: [
-							{
-								on: "hover",
-								style: {
-									itemBackground: "rgba(0, 0, 0, .03)",
-									itemOpacity: 1
+		<>
+			{games.length > 0 ? (
+				games.length > 1 ? (
+					<div style={{ height: "500px", width: "95vw" }}>
+						{" "}
+						<h2
+							style={{
+								paddingTop: "20px",
+								display: "flex",
+								justifyContent: "center"
+							}}
+						>
+							Stats
+						</h2>
+						<ResponsiveLine
+							data={data}
+							margin={{ top: 20, right: 110, bottom: 50, left: 110 }}
+							xScale={{ type: "point" }}
+							yScale={{
+								type: "linear",
+								min: "0",
+								max: "auto",
+								stacked: false,
+								reverse: false
+							}}
+							axisTop={null}
+							axisRight={null}
+							isInteractive={false}
+							enablePointLabel={true}
+							axisBottom={{
+								orient: "bottom",
+								tickSize: 5,
+								tickPadding: 5,
+								tickRotation: 0,
+								legend: "Last 10 Games",
+								legendOffset: 36,
+								legendPosition: "middle"
+							}}
+							axisLeft={{
+								orient: "left",
+								tickSize: 5,
+								tickPadding: 5,
+								tickRotation: 0,
+								legend: "Total",
+								legendOffset: -40,
+								legendPosition: "middle"
+							}}
+							colors={{ scheme: "nivo" }}
+							pointSize={10}
+							useMesh={true}
+							legends={[
+								{
+									anchor: "bottom-right",
+									direction: "column",
+									justify: false,
+									translateX: 100,
+									translateY: 0,
+									itemsSpacing: 0,
+									itemDirection: "left-to-right",
+									itemWidth: 80,
+									itemHeight: 20,
+									itemOpacity: 0.75,
+									symbolSize: 12,
+									symbolShape: "circle",
+									symbolBorderColor: "rgba(0, 0, 0, .5)",
+									effects: [
+										{
+											on: "hover",
+											style: {
+												itemBackground: "rgba(0, 0, 0, .03)",
+												itemOpacity: 1
+											}
+										}
+									]
 								}
-							}
-						]
-					}
-				]}
-			/>
-		</div>
+							]}
+						/>
+					</div>
+				) : (
+					"You Must Play More Then Two Games To See These Graphs"
+				)
+			) : null}
+		</>
 	);
 };
 

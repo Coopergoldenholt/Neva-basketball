@@ -1,0 +1,2 @@
+insert into player_stats (game_id, user_id, field_goals_attempted, field_goals_made, free_throw_shot, free_throw_made, three_shot, three_made, offensive_rebound, defensive_rebound, steal, assist, block, turnover)
+values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);

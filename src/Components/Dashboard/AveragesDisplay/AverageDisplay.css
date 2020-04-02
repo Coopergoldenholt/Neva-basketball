@@ -2,6 +2,8 @@
 	max-width: 90vw;
 	height: 40px;
 	display: flex;
+	margin-left: 10px;
+	align-items: center;
 }
 .average-display-stat-name-stat-container {
 	border-top: 2px black solid;

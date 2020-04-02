@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getAverageStats } from "../../../ducks/statReducer";
 import "./AverageDisplay.css";
 
-const AveragesDisplay = props => {
+const AveragesDisplayPlayerNoSubscription = props => {
 	useEffect(() => {
 		props.getAverageStats(props.user.user.id);
 	}, []);
@@ -13,14 +13,8 @@ const AveragesDisplay = props => {
 		points,
 		fieldGoalsMade,
 		fieldGoalsShot,
-		layupShot,
-		closeRangeShot,
-		midRangeShot,
 		threeShot,
 		freeThrowShot,
-		layupMade,
-		closeRangeMade,
-		midRangeMade,
 		threeMade,
 		freeThrowMade,
 		offensiveRebound,
@@ -37,13 +31,7 @@ const AveragesDisplay = props => {
 		turnoverAverage,
 		fieldGoalPercentage,
 		freeThrowPercentage,
-		twoPointPercentage,
-		threePointPercentage,
-		effectiveFieldGoalPercentage,
-		trueShootingPercentage,
-		layupPercentage,
-		midRangePercentage,
-		closeRangePercentage
+		threePointPercentage
 	} = props.stats.averageStats;
 
 	return (
@@ -62,30 +50,12 @@ const AveragesDisplay = props => {
 							<p>FG%</p>
 							<hr className="line"></hr> <p>{fieldGoalPercentage}</p>
 						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>eFG%</p>
-							<hr className="line"></hr> <p>{effectiveFieldGoalPercentage}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>TS%</p>
-							<hr className="line"></hr> <p>{trueShootingPercentage}</p>
-						</div>
+
 						<div className="average-display-stat-name-stat-container">
 							<p>3P%</p>
 							<hr className="line"></hr> <p>{threePointPercentage}</p>
 						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>LP%</p>
-							<hr className="line"></hr> <p>{layupPercentage}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>CR%</p>
-							<hr className="line"></hr> <p>{closeRangePercentage}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>MR%</p>
-							<hr className="line"></hr> <p>{midRangePercentage}</p>
-						</div>
+
 						<div className="average-display-stat-name-stat-container">
 							<p>FT%</p>
 							<hr className="line"></hr> <p>{freeThrowPercentage}</p>
@@ -139,33 +109,6 @@ const AveragesDisplay = props => {
 						</div>
 
 						<div className="average-display-stat-name-stat-container">
-							<p>LPA</p> <hr className="line"></hr>
-							<p>{layupShot}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>LPM</p>
-							<hr className="line"></hr> <p>{layupMade}</p>
-						</div>
-
-						<div className="average-display-stat-name-stat-container">
-							<p>CRA</p>
-							<hr className="line"></hr> <p>{closeRangeShot}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>CRM</p>
-							<hr className="line"></hr> <p>{closeRangeMade}</p>
-						</div>
-
-						<div className="average-display-stat-name-stat-container">
-							<p>MRA</p>
-							<hr className="line"></hr> <p>{midRangeShot}</p>
-						</div>
-						<div className="average-display-stat-name-stat-container">
-							<p>MRM</p>
-							<hr className="line"></hr> <p>{midRangeMade}</p>
-						</div>
-
-						<div className="average-display-stat-name-stat-container">
 							<p>FTA</p>
 							<hr className="line"></hr> <p>{freeThrowShot}</p>
 						</div>
@@ -214,4 +157,6 @@ const AveragesDisplay = props => {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, { getAverageStats })(AveragesDisplay);
+export default connect(mapStateToProps, { getAverageStats })(
+	AveragesDisplayPlayerNoSubscription
+);

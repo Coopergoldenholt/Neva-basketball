@@ -5,8 +5,10 @@ import { connect } from "react-redux";
 import { startGame } from "../../ducks/inGameStatsReducer";
 import { getUserSession } from "../../ducks/userReducer";
 import StartGamePopup from "./StartGamePopup";
+import EnterStats from "./EnterStats/EnterStats";
 import StatDisplay from "./StatDisplay/StatDisplay";
 import AveragesDisplay from "./AveragesDisplay/AveragesDisplay";
+import AveragesDisplayPlayerNoSubscription from "./AveragesDisplay/AveragesDisplayPlayerNoSubscription";
 import AveragesLineGraph from "./AveragesLineGraph/AveragesLineGraph";
 import PercentageLingGraph from "./PercentagesLineGraph/PercentagesLineGraph";
 import getAverageStats from "../../ducks/statReducer";
@@ -19,39 +21,54 @@ const Dashboard = props => {
 		if (props.user.id) {
 		}
 	}, []);
-	const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() +
-		1}-${new Date().getDate()}`;
+	// const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() +
+	// 	1}-${new Date().getDate()}`;
+	// console.log(props.stats);
 
 	const handleGetSession = () => {
-		axios
-			.get("/api/user")
-			.then(res => {
-				if (res.data.subscription === "none") {
-					alert("You Are Not Subscribed");
-					props.history.push("/");
-				}
-			})
-			.catch(err => {
-				alert("Please Login");
-				props.history.push("/login");
-			});
+		axios.get("/api/user").catch(err => {
+			alert("Please Login");
+			props.history.push("/login");
+		});
 		props.getUserSession();
 	};
 	// if (props.user.id) {
 	// 	props.getAverageStats(props.user.id);
 	// }
+	const getSubscription = () => {
+		return props.user.subscription;
+	};
+	const display = () => {
+		switch (getSubscription()) {
+			case 6:
+				return <div>case 1</div>;
 
-	return (
-		<div>
-			{showStartGamePopup ? <StartGamePopup /> : null}
-			<button onClick={() => setShowStartGamePopup(true)}>Start A Game</button>
-			<AveragesDisplay />
-			<AveragesLineGraph />
-			<PercentageLingGraph />
-			<ShotDistrbuttionChart />
-			{props.user.id ? <StatDisplay /> : null}
-		</div>
-	);
+			case "none":
+				return (
+					<div>
+						<EnterStats />
+						<AveragesDisplayPlayerNoSubscription />
+					</div>
+				);
+
+			default:
+				return (
+					<div>
+						{showStartGamePopup ? <StartGamePopup /> : null}
+						<button onClick={() => setShowStartGamePopup(true)}>
+							Start A Game
+						</button>
+						<AveragesDisplay />
+						<AveragesLineGraph />
+						<PercentageLingGraph />
+						<ShotDistrbuttionChart />
+						{props.user.id ? <StatDisplay /> : null}
+					</div>
+				);
+		}
+	};
+
+	return <>{display()}</>;
 };
 
 const mapStateToProps = state => {

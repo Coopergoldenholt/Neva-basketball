@@ -1,7 +1,19 @@
 import React from "react";
 
 const Nav = () => {
-	return <div>Nav</div>;
+	return (
+		<>
+			<header className="header">
+				<p>LOGO</p>
+				<div>
+					<a>Login</a>
+					<a>Register</a>
+					<a>About</a>
+					<a>Contact Us</a>
+				</div>
+			</header>
+		</>
+	);
 };
 
 export default Nav;

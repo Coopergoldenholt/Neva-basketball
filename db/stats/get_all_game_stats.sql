@@ -20,5 +20,5 @@ sum(steal) as steal,
 sum(assist) as assist,
 sum(block) as block,
 sum(turnover) as turnover
-from basic_stats
+from player_stats
 where user_id = $1;

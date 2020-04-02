@@ -154,6 +154,7 @@ const Register = props => {
 					label="Password"
 					variant="outlined"
 					size="small"
+					type="password"
 				/>
 				{password === confirmPassword ? (
 					<TextField

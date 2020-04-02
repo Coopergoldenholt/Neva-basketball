@@ -13,7 +13,7 @@ const StatDisplay = props => {
 		return <EachGameDisplay stats={ele} />;
 	});
 
-	return <div>{eachGame}</div>;
+	return <>{props.stats.games.length > 0 ? <div>{eachGame}</div> : null}</>;
 };
 
 const mapStateToProps = state => {

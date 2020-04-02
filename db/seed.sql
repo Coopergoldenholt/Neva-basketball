@@ -3,18 +3,17 @@ CREATE TABLE "users" (
   "full_name" varchar(40),
   "email" varchar(100) UNIQUE,
   "password" text,
-  "country_code" int,
-  "subscription" varchar(10)
+  "customer_id" varchar(100)
 );
 
 CREATE TABLE "games" (
   "id" SERIAL PRIMARY KEY,
   "opponent" varchar(40),
   "user_id" int,
-  "date" date
+  "date" timestamp
 );
 
-CREATE TABLE "basic_stats" (
+CREATE TABLE "player_stats" (
   "id" SERIAL PRIMARY KEY,
   "game_id" int,
   "user_id" int,
@@ -33,14 +32,20 @@ CREATE TABLE "basic_stats" (
   "steal" int,
   "assist" int,
   "block" int,
-  "turnover" int
+  "turnover" int,
+  "field_goals_attempted" int,
+  "field_goals_made" int
 );
+
+
 
 ALTER TABLE "games" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "basic_stats" ADD FOREIGN KEY ("game_id") REFERENCES "games" ("id");
+ALTER TABLE "player_stats" ADD FOREIGN KEY ("game_id") REFERENCES "games" ("id");
 
-ALTER TABLE "basic_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "player_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+
 
 
 
