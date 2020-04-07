@@ -1,6 +1,6 @@
 select 
 count(*) as number_of_games,
-avg((layup_made * 2) + (close_range_made * 2) + (free_throw_made) + (mid_range_made * 2) + (three_made * 3)) as points, 
+avg(((field_goals_made - three_made) * 2)  + (free_throw_made) + (three_made * 3)) as points, 
 sum(layup_made + close_range_made + mid_range_made + three_made) as field_goals_made, 
 sum((layup_made * 2) + (close_range_made * 2) + (free_throw_made) + (mid_range_made * 2) + (three_made * 3)) as total_points, 
 sum(layup_shot + close_range_shot + mid_range_shot + three_shot) as field_goals_shot,
@@ -19,6 +19,8 @@ sum(defensive_rebound) as defensive_rebound,
 sum(steal) as steal,
 sum(assist) as assist,
 sum(block) as block,
-sum(turnover) as turnover
+sum(turnover) as turnover,
+sum(field_goals_attempted) as basic_field_goals_attempted,
+sum(field_goals_made) as basic_field_goals_made
 from player_stats
 where user_id = $1;

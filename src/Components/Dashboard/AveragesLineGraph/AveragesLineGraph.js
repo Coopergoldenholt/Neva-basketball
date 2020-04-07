@@ -13,10 +13,11 @@ const AveragesLineGraph = props => {
 			ele.three_made * 3;
 		return points;
 	});
+	const gamesLength = games.slice(0, 9);
 
 	const data = [
 		{
-			id: "Points",
+			id: "PTS",
 			color: "hsl(307, 70%, 50%)",
 			data: points.slice(0, 9).map((ele, index) => {
 				return {
@@ -26,7 +27,7 @@ const AveragesLineGraph = props => {
 			})
 		},
 		{
-			id: "Rebounds",
+			id: "REB",
 			color: "hsl(252, 70%, 50%)",
 			data: games.slice(0, 9).map((ele, index) => {
 				return {
@@ -36,7 +37,7 @@ const AveragesLineGraph = props => {
 			})
 		},
 		{
-			id: "Steals",
+			id: "STL",
 			color: "hsl(97, 70%, 50%)",
 			data: games.slice(0, 9).map((ele, index) => {
 				return {
@@ -46,7 +47,7 @@ const AveragesLineGraph = props => {
 			})
 		},
 		{
-			id: "Blocks",
+			id: "BLK",
 			color: "hsl(128, 70%, 50%)",
 			data: games.slice(0, 9).map((ele, index) => {
 				return {
@@ -56,7 +57,7 @@ const AveragesLineGraph = props => {
 			})
 		},
 		{
-			id: "Turnovers",
+			id: "TO",
 			color: "hsl(128, 70%, 50%)",
 			data: games.slice(0, 9).map((ele, index) => {
 				return {
@@ -71,7 +72,9 @@ const AveragesLineGraph = props => {
 		<>
 			{games.length > 0 ? (
 				games.length > 1 ? (
-					<div style={{ height: "500px", width: "95vw" }}>
+					<div
+						style={{ height: "320px", width: "95vw", paddingBottom: "50px" }}
+					>
 						{" "}
 						<h2
 							style={{
@@ -84,7 +87,7 @@ const AveragesLineGraph = props => {
 						</h2>
 						<ResponsiveLine
 							data={data}
-							margin={{ top: 20, right: 110, bottom: 50, left: 110 }}
+							margin={{ top: 20, right: 20, bottom: 80, left: 35 }}
 							xScale={{ type: "point" }}
 							yScale={{
 								type: "linear",
@@ -97,12 +100,13 @@ const AveragesLineGraph = props => {
 							axisRight={null}
 							isInteractive={false}
 							enablePointLabel={true}
+							areaBaselineValue={100}
 							axisBottom={{
 								orient: "bottom",
 								tickSize: 5,
 								tickPadding: 5,
 								tickRotation: 0,
-								legend: "Last 10 Games",
+								legend: `Last ${gamesLength.length} Games`,
 								legendOffset: 36,
 								legendPosition: "middle"
 							}}
@@ -120,17 +124,17 @@ const AveragesLineGraph = props => {
 							useMesh={true}
 							legends={[
 								{
-									anchor: "bottom-right",
-									direction: "column",
+									anchor: "bottom",
+									direction: "row",
 									justify: false,
-									translateX: 100,
-									translateY: 0,
-									itemsSpacing: 0,
+									translateX: 10,
+									translateY: 70,
+									itemsSpacing: -0,
 									itemDirection: "left-to-right",
-									itemWidth: 80,
+									itemWidth: 45,
 									itemHeight: 20,
 									itemOpacity: 0.75,
-									symbolSize: 12,
+									symbolSize: 6,
 									symbolShape: "circle",
 									symbolBorderColor: "rgba(0, 0, 0, .5)",
 									effects: [

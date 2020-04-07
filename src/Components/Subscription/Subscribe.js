@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import { CardElement, injectStripe } from "react-stripe-elements";
 
 const Subscribe = props => {
@@ -28,10 +29,47 @@ const Subscribe = props => {
 				"Loading"
 			) : (
 				<div>
-					<div style={{ width: "60vw" }}>
-						<CardElement />
+					<div
+						style={{
+							width: "95vw"
+						}}
+					>
+						{/* <CardNumberElement
+							style={{
+								base: {
+									iconColor: "#c4f0ff",
+									// color: "#fff",
+									fontSize: "20px"
+								},
+								invalid: {
+									iconColor: "#FFC7EE",
+									color: "#FFC7EE"
+								}
+							}}
+						/>
+						<CardExpiryElement />
+						<CardCvcElement /> */}
+						<CardElement
+							iconStyle="solid"
+							style={{
+								base: {
+									iconColor: "#c4f0ff",
+									// color: "#fff",
+									fontSize: "18px"
+								},
+								invalid: {
+									iconColor: "#FFC7EE",
+									color: "#FFC7EE"
+								}
+							}}
+						/>
 					</div>
-					<button onClick={() => handleSubmit()}>Subscribe!</button>
+					<Button
+						onClick={() => handleSubmit()}
+						style={{ background: "#011B56", color: "white" }}
+					>
+						Subscribe!
+					</Button>
 				</div>
 			)}
 		</>

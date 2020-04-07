@@ -16,28 +16,32 @@ import ShotDistrbuttionChart from "./ShotDistributionChart/ShotDistributionChart
 
 const Dashboard = props => {
 	const [showStartGamePopup, setShowStartGamePopup] = useState(false);
-	useEffect(() => {
-		handleGetSession();
-		if (props.user.id) {
-		}
-	}, []);
+	// useEffect(() => {
+	// 	handleGetSession();
+	// 	if (props.user.id) {
+	// 	}
+	// }, []);
 	// const currentDate = `${new Date().getFullYear()}-${new Date().getMonth() +
 	// 	1}-${new Date().getDate()}`;
 	// console.log(props.stats);
 
 	const handleGetSession = () => {
-		axios.get("/api/user").catch(err => {
-			alert("Please Login");
-			props.history.push("/login");
-		});
+		axios.get("/api/user");
 		props.getUserSession();
 	};
 	// if (props.user.id) {
 	// 	props.getAverageStats(props.user.id);
 	// }
+	if (!props.user.loggedIn) {
+		props.getUserSession().catch(() => {
+			alert("Please Login");
+			props.history.push("/login");
+		});
+	}
 	const getSubscription = () => {
 		return props.user.subscription;
 	};
+
 	const display = () => {
 		switch (getSubscription()) {
 			case 6:
@@ -48,10 +52,13 @@ const Dashboard = props => {
 					<div>
 						<EnterStats />
 						<AveragesDisplayPlayerNoSubscription />
+						<AveragesLineGraph />
+						<PercentageLingGraph />
+						{props.user.id ? <StatDisplay /> : null}
 					</div>
 				);
 
-			default:
+			case "Basic Player Package":
 				return (
 					<div>
 						{showStartGamePopup ? <StartGamePopup /> : null}

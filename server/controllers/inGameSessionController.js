@@ -54,6 +54,10 @@ module.exports = {
 			block,
 			turnover
 		} = req.session.user.game;
+		const fieldGoalsShot =
+			layupShot + closeRangeShot + midRangeShot + threeShot;
+		const fieldGoalsMade =
+			layupMade + closeRangeMade + midRangeMade + threeMade;
 		const [game] = await db.game.create_game([opponent, userId, date]);
 		const [stats] = await db.game.create_game_stat([
 			game.id,
@@ -73,7 +77,9 @@ module.exports = {
 			steal,
 			assist,
 			block,
-			turnover
+			turnover,
+			fieldGoalsShot,
+			fieldGoalsMade
 		]);
 
 		delete req.session.user.game;

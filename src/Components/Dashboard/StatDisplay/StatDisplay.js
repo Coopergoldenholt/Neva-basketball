@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { getGames, getAverageStats } from "../../../ducks/statReducer";
 import EachGameDisplay from "./EachGameDisplay/EachGameDisplay";
+import EachGameDisplayNoSubscription from "./EachGameDisplay/EachGameDisplayNoSubscription";
 
 const StatDisplay = props => {
 	useEffect(() => {
@@ -10,7 +11,11 @@ const StatDisplay = props => {
 	}, [props.inGameStats]);
 
 	const eachGame = props.stats.games.map(ele => {
-		return <EachGameDisplay stats={ele} />;
+		return props.user.user.subscription === "none" ? (
+			<EachGameDisplayNoSubscription stats={ele} />
+		) : (
+			<EachGameDisplay stats={ele} />
+		);
 	});
 
 	return <>{props.stats.games.length > 0 ? <div>{eachGame}</div> : null}</>;

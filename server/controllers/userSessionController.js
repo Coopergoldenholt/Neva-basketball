@@ -17,7 +17,7 @@ module.exports = {
 			name: name,
 			email: email
 		});
-		console.log(customer);
+
 		const [user] = await db.user.create_user_local([
 			name,
 			email,
@@ -93,7 +93,8 @@ module.exports = {
 				subscription: "none",
 				accessToken: accessToken,
 				id: newFacebookUser.id,
-				customerId: customer.id
+				customerId: customer.id,
+				accessToken: accessToken
 			};
 
 			res.status(200).send(req.session.user);
@@ -101,7 +102,7 @@ module.exports = {
 			const customer = await stripe.customers.retrieve(
 				existingUser.customer_id
 			);
-			console.log(customer);
+
 			if (customer.subscriptions.data.length > 0) {
 				req.session.user = {
 					name: existingUser.full_name,
@@ -109,7 +110,8 @@ module.exports = {
 					loggedIn: true,
 					accessToken: accessToken,
 					id: existingUser.id,
-					subscription: customer.subscriptions.data[0].plan.nickname
+					subscription: customer.subscriptions.data[0].plan.nickname,
+					accessToken: accessToken
 				};
 			} else {
 				req.session.user = {
@@ -119,10 +121,11 @@ module.exports = {
 					subscription: existingUser.subscription,
 					accessToken: accessToken,
 					id: existingUser.id,
-					subscription: "none"
+					subscription: "none",
+					accessToken: accessToken
 				};
 			}
-
+			console.log(req.session.user);
 			res.status(200).send(req.session.user);
 		}
 	},
@@ -156,7 +159,7 @@ module.exports = {
 			const customer = await stripe.customers.retrieve(
 				existingUser.customer_id
 			);
-			console.log(customer);
+
 			if (customer.subscriptions.data.length > 0) {
 				req.session.user = {
 					name: existingUser.full_name,

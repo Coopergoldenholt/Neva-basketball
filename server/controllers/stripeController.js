@@ -15,6 +15,9 @@ module.exports = {
 			customer: user.customer_id,
 			items: [{ plan: "plan_GxCpQuOKH9I6Ye" }]
 		});
-		res.status(200).send("Subscription Started");
+		console.log(subscription.plan);
+		req.session.user.subscription = subscription.plan.nickname;
+		console.log(req.session.user.subscription);
+		res.status(200).send(req.session.user);
 	}
 };

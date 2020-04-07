@@ -64,7 +64,7 @@ const AveragesDisplayPlayerNoSubscription = props => {
 							<p>RB</p>
 							<hr className="line"></hr> <p>{reboundAverage}</p>
 						</div>
-						<div className="average-display-stat-name-stat-container">
+						<div className="average-display-stat-name-stat-container last-item">
 							<p>STL</p>
 							<hr className="line"></hr> <p>{stealAverage}</p>
 						</div>
@@ -108,7 +108,7 @@ const AveragesDisplayPlayerNoSubscription = props => {
 							<hr className="line"></hr> <p>{threeMade}</p>
 						</div>
 
-						<div className="average-display-stat-name-stat-container">
+						<div className="average-display-stat-name-stat-container last-item">
 							<p>FTA</p>
 							<hr className="line"></hr> <p>{freeThrowShot}</p>
 						</div>
@@ -135,7 +135,7 @@ const AveragesDisplayPlayerNoSubscription = props => {
 							<hr className="line"></hr> <p>{steal}</p>
 						</div>
 
-						<div className="average-display-stat-name-stat-container">
+						<div className="average-display-stat-name-stat-container last-item">
 							<p>AST</p>
 							<hr className="line"></hr> <p>{assist}</p>
 						</div>

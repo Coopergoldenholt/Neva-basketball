@@ -10,6 +10,7 @@ module.exports = {
 		const db = req.app.get("db");
 		const { userId } = req.params;
 		const [stats] = await db.stats.get_all_game_stats([userId]);
+
 		const twoPointShot =
 			parseInt(stats.layup_shot) +
 			parseInt(stats.close_range_shot) +
@@ -42,11 +43,17 @@ module.exports = {
 			parseInt(stats.steal) -
 			parseInt(stats.turnover);
 
+		
+
 		const averageStats = {
 			totalGames: stats.number_of_games,
-			points: Math.round(stats.points * 100) / 100,
-			fieldGoalsMade: stats.field_goals_made,
-			fieldGoalsShot: stats.field_goals_shot,
+			points: Math.round(parseInt(stats.points) * 100) / 100,
+			fieldGoalsMade:
+				parseInt(stats.field_goals_made) +
+				parseInt(stats.basic_field_goals_made),
+			fieldGoalsShot:
+				parseInt(stats.field_goals_shot) +
+				parseInt(stats.basic_field_goals_attempted),
 			layupShot: stats.layup_shot,
 			closeRangeShot: stats.close_range_shot,
 			midRangeShot: stats.mid_range_shot,
@@ -89,8 +96,11 @@ module.exports = {
 					(parseInt(stats.turnover) / parseInt(stats.number_of_games)) * 100
 				) / 100,
 			fieldGoalPercentage:
-				Math.round((stats.field_goals_made / stats.field_goals_shot) * 10000) /
-				100,
+				Math.round(
+					((stats.field_goals_made + stats.basic_field_goals_attempted) /
+						(stats.field_goals_shot + stats.basic_field_goals_attempted)) *
+						10000
+				) / 100,
 			freeThrowPercentage:
 				Math.round((stats.free_throw_made / stats.free_throw_shot) * 10000) /
 				100,
@@ -109,6 +119,7 @@ module.exports = {
 			midRangePercentage:
 				Math.round((stats.mid_range_made / stats.mid_range_shot) * 10000) / 100
 		};
+	
 
 		res.status(200).send(averageStats);
 	},
@@ -130,16 +141,23 @@ module.exports = {
 			block,
 			turnover
 		} = req.body;
-		console.log(opponent, date);
-		const [game] = await db.game.create_game([opponent, 1, date]);
-		console.log(game);
-		const stats = await db.game.create_basic_stat_game([
+		
+		const [game] = await db.game.create_game([
+			opponent,
+			req.session.user.id,
+			date
+		]);
+		const stats = await db.game.create_game_stat([
 			game.id,
-			1,
-			fieldGoalShot,
-			fieldGoalMade,
+			req.session.user.id,
+			0,
+			0,
+			0,
+			0,
 			freeThrowShot,
 			freeThrowMade,
+			0,
+			0,
 			threeShot,
 			threeMade,
 			offensiveRebound,
@@ -147,7 +165,9 @@ module.exports = {
 			steal,
 			assist,
 			block,
-			turnover
+			turnover,
+			fieldGoalShot,
+			fieldGoalMade
 		]);
 		res.status(200).send("Stats Saved");
 	}

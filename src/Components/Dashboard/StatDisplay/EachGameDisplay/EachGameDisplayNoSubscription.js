@@ -3,7 +3,7 @@ import Moment from "react-moment";
 import GameRadar from "./GameRadar/GameRadar";
 import "./EachGameDisplay.css";
 
-const EachGameDisplay = props => {
+const EachGameDisplayNoSubscription = props => {
 	const {
 		layup_shot,
 		layup_made,
@@ -33,10 +33,6 @@ const EachGameDisplay = props => {
 		mid_range_made * 2 +
 		three_made * 3;
 
-	const trueShootingAttempts = field_goals_attempted + 0.44 * free_throw_shot;
-	const trueShootingPercentage = (points / (2 * trueShootingAttempts)) * 100;
-	const effectiveFieldGoalPercentage =
-		((field_goals_made + 0.5 * three_made) / field_goals_attempted) * 100;
 	return (
 		<>
 			<div>v.s. {opponent}</div>
@@ -62,36 +58,26 @@ const EachGameDisplay = props => {
 							100}
 					</p>
 				</div>
+
 				<div className="average-display-stat-name-stat-container-game">
-					<p>eFG%</p>
-					<hr className="line"></hr>{" "}
-					<p>{Math.round(effectiveFieldGoalPercentage * 100) / 100}</p>
+					<p>3P</p>
+					<hr className="line-game"></hr>{" "}
+					<p>
+						{three_made}/{three_shot}
+					</p>
 				</div>
+
 				<div className="average-display-stat-name-stat-container-game">
-					<p>TS%</p>
-					<hr className="line"></hr>{" "}
-					<p>{Math.round(trueShootingPercentage * 100) / 100}</p>
+					<p>3P%</p>
+					<hr className="line-game"></hr>{" "}
+					<p>{Math.round((three_made / three_shot) * 10000) / 100}</p>
 				</div>
-				<div className="average-display-stat-name-stat-container-game">
+				<div className="average-display-stat-name-stat-container-game last-item">
 					<p>FT</p>
 					<hr className="line"></hr>{" "}
 					<p>
 						{free_throw_made}/{free_throw_shot}
 					</p>
-				</div>
-
-				<div className="average-display-stat-name-stat-container-game">
-					<p>3PA</p>
-					<hr className="line-game"></hr> <p>{three_shot}</p>
-				</div>
-				<div className="average-display-stat-name-stat-container-game">
-					<p>3PM</p>
-					<hr className="line-game"></hr> <p>{three_made}</p>
-				</div>
-				<div className="average-display-stat-name-stat-container-game">
-					<p>3P%</p>
-					<hr className="line-game"></hr>{" "}
-					<p>{Math.round((three_made / three_shot) * 10000) / 100}</p>
 				</div>
 
 				<div className="average-display-stat-name-stat-container-game">
@@ -116,7 +102,7 @@ const EachGameDisplay = props => {
 					<p>STL</p>
 					<hr className="line-game"></hr> <p>{steal}</p>
 				</div>
-				<div className="average-display-stat-name-stat-container-game">
+				<div className="average-display-stat-name-stat-container-game last-item">
 					<p>AST</p>
 					<hr className="line-game"></hr> <p>{assist}</p>
 				</div>
@@ -129,16 +115,8 @@ const EachGameDisplay = props => {
 					<hr className="line-game"></hr> <p>{turnover}</p>
 				</div>
 			</div>
-
-			<div className="shot-distribution-chart">
-				<GameRadar
-					fieldGoalsAttempted={field_goals_attempted}
-					fieldGoalsMade={field_goals_made}
-					stats={props.stats}
-				/>
-			</div>
 		</>
 	);
 };
 
-export default EachGameDisplay;
+export default EachGameDisplayNoSubscription;
